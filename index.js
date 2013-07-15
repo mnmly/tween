@@ -24,6 +24,7 @@ function Tween(obj) {
   this._from = obj;
   this.ease('linear');
   this.duration(500);
+  this.delay(0);
 }
 
 /**
@@ -76,6 +77,19 @@ Tween.prototype.duration = function(ms){
 };
 
 /**
+ * Set delay to `ms` [0].
+ *
+ * @param {Number} ms
+ * @return {Tween} self
+ * @api public
+ */
+
+Tween.prototype.delay = function(ms){
+  this._delay = ms;
+  return this;
+};
+
+/**
  * Set easing function to `fn`.
  *
  *    tween.ease('in-out-sine')
@@ -121,7 +135,10 @@ Tween.prototype.step = function(){
   var duration = this._duration;
   var now = Date.now();
   var delta = now - this._start;
-  var done = delta >= duration;
+  var done = delta >= duration + this._delay;
+  var waiting = delta < this._delay;
+  
+  if (waiting) return;
 
   // complete
   if (done) {
@@ -137,7 +154,7 @@ Tween.prototype.step = function(){
   var to = this._to;
   var curr = this._curr;
   var fn = this._ease;
-  var p = (now - this._start) / duration;
+  var p = (now - this._start - this._delay) / duration;
   var n = fn(p);
 
   // array

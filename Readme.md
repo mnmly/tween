@@ -17,6 +17,7 @@ var button = document.querySelector('button');
 var tween = Tween({ rotate: 0, opacity: 0 })
   .ease('out-bounce')
   .to({ rotate: 360, opacity: 1  })
+  .delay(200)
   .duration(800);
 
 tween.update(function(o){
@@ -55,6 +56,10 @@ animate();
 ### Tween#duration(ms:Number)
 
   Set duration to `ms` [500].
+
+### Tween#delay(ms:Number)
+
+  Set delay to `ms` [0].
 
 ### Tween#ease(fn:String|Function)
 
